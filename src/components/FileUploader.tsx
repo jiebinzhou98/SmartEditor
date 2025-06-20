@@ -4,19 +4,25 @@ import { parseFile } from "@/lib/parseFile"
 import { Input } from "./ui/input"
 import React, { useState } from "react"
 
+//parent component will pass a data function, and able to recive the parsed table data
 type Props ={
     onData: (data: string[][]) => void
 };
 
+//destructuring onData directly form the props
 export function FileUploader({ onData }: Props){
+    //store name of the upload file
     const [fileName, setFileName] = useState('');
 
+    //Will trigger when user selected a file
     const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) =>{
         const file = e.target.files?.[0];
         if(!file) return;
 
+        //await and run the logic from parseFile.ts
         try{
             const data = await parseFile(file);
+            //result will passed back to the parent using onData
             onData(data);
             setFileName(file.name);
         }catch(err){
