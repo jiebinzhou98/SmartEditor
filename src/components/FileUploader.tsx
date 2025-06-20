@@ -1,12 +1,12 @@
 'use client'
 
-import { parseFile } from "@/lib/parseFile"
+import { parseFile, ParsedWorkbook } from "@/lib/parseFile"
 import { Input } from "./ui/input"
 import React, { useState } from "react"
 
 //parent component will pass a data function, and able to recive the parsed table data
 type Props ={
-    onData: (data: string[][]) => void
+    onData: (workbook: ParsedWorkbook) => void
 };
 
 //destructuring onData directly form the props
@@ -21,9 +21,9 @@ export function FileUploader({ onData }: Props){
 
         //await and run the logic from parseFile.ts
         try{
-            const data = await parseFile(file);
+            const workbook = await parseFile(file);
             //result will passed back to the parent using onData
-            onData(data);
+            onData(workbook);
             setFileName(file.name);
         }catch(err){
             alert('Failed to aprse file: '+ (err as Error).message);
